@@ -1,3 +1,14 @@
+@font-face {
+  font-family: Aeonik;
+  src: url("./Aeonik-Regular.otf") format("opentype");
+}
+
+@font-face {
+  font-family: Aeonik;
+  font-weight: bold;
+  src: url("./Aeonik-Bold.otf") format("opentype");
+}
+
 html,
 body {
   padding: 0;
@@ -13,6 +24,8 @@ a {
 
 * {
   box-sizing: border-box;
+  font-family: Aeonik;
+  color: #0675F9;
 }
 
 main {
@@ -20,6 +33,56 @@ main {
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
+}
+
+main > h1 {
+  margin-top: 20px;
+  font-size: 50px;
+}
+
+main > span {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.plans {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.plans h2 {
+  font-size: 32px;
+}
+
+.plans > div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 300px;
+  margin: 0 20px;
+}
+
+.plans p {
+  color: black;
+}
+
+.plans button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-weight: bold;
+  font-size: 16px;
+  background-color: #0675F9;
+  color: white;
+  border: none;
+  transition: all 0.2s ease-in-out;
+}
+
+.plans button:hover {
+  background-color: #EBEBEB;
+  color: #0675F9;
+  cursor: pointer;
 }
