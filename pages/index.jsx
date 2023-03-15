@@ -6,6 +6,7 @@ import { useState } from 'react';
 const Home = () => {
   const [signature, setSignature] = useState('')
   const { data, error, isLoading, signMessage } = useSignMessage()
+  const { isConnected } = useAccount()
   return (
     <div>
       <Head>
@@ -20,19 +21,22 @@ const Home = () => {
       <main>
         <ConnectButton />
         <br />
-        <button onClick={async () => {
-          signMessage({message: 'I am proving ownership of this wallet so I can use my ypriceapi subscription' })
-        }}>Sign</button>
-        <br />
-        {data && (
+        {isConnected && (
           <>
-            <p>{data}</p>
-            <button onClick={() => {
-              navigator.clipboard.writeText(data)
-            }}>Copy</button>
-          </>
+            <button onClick={async () => {
+              signMessage({message: 'I am proving ownership of this wallet so I can use my ypriceapi subscription' })
+            }}>Sign</button>
+            <br />
+            {data && (
+              <>
+                <p>{data}</p>
+                <button onClick={() => {
+                  navigator.clipboard.writeText(data)
+                }}>Copy</button>
+              </>
+            )}
+          </>  
         )}
-
         {/* <input type="text" placeholder='address' /> */}
       </main>
     </div>
