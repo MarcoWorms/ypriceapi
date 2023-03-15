@@ -1,12 +1,21 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Head from 'next/head';
 import { useSignMessage, useAccount } from 'wagmi'
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const Home = () => {
-  const [signature, setSignature] = useState('')
+  const [connected, setConnected] = useState(false)
+  
   const { data, error, isLoading, signMessage } = useSignMessage()
+
   const { isConnected } = useAccount()
+
+  useEffect(() => {
+    if (isConnected) {
+      setConnected(true)
+    }
+  }, [isConnected])
+
   return (
     <div>
       <Head>
@@ -21,7 +30,7 @@ const Home = () => {
       <main>
         <ConnectButton />
         <br />
-        {isConnected && (
+        {connected && (
           <>
             <button onClick={async () => {
               signMessage({message: 'I am proving ownership of this wallet so I can use my ypriceapi subscription' })
