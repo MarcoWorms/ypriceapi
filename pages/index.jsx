@@ -1,6 +1,6 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import Head from 'next/head';
-import { useSignMessage } from 'wagmi'
+import { useSignMessage, useAccount } from 'wagmi'
 import { useState } from 'react';
 
 const Home = () => {
