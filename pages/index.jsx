@@ -69,7 +69,7 @@ const Home = () => {
 
       <main>
         <h1>yPrice API</h1>
-        <p style={{fontFamily: 'monospace', color: '#0675F9', backgroundColor: '#eee', fontSize: 16}}>ypriceapi.yearn.farm</p>
+        {/* <p style={{fontFamily: 'monospace', color: '#0675F9', backgroundColor: '#eee', fontSize: 16}}>ypriceapi.yearn.farm</p> */}
         <br />
         {connected ? (
           <>
