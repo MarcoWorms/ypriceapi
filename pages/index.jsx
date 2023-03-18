@@ -60,7 +60,7 @@ const Plan = props => {
       <b><p>Time Interval:</p></b>
       <span>{props.timeInterval}</span>
       <br />
-      <b><p>Choose amount of days to subscribe:</p></b>
+      {props.hasAllowance && <b><p>Choose amount of days to subscribe:</p></b>}
       <div>
         <div>
           {props.hasAllowance && <button className="subscribe" onClick={async () => {
