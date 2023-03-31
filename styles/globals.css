@@ -64,7 +64,9 @@ main > div > span {
 }
 
 .plans h3 {
-  margin-top: 5px;
+  margin-top: 0px;
+  margin-bottom: 10px;
+  font-size: 32px;
 }
 
 .plans > div {
@@ -80,9 +82,22 @@ main > div > span {
 
 .plans > div > div {
   width: 100%;
-  display: flex;
-  justify-content: center;
+  /* display: flex; */
+  /* justify-content: center; */
+  padding: 0 10px;
 }
+
+.plans > div > div > div {
+  /* margin-top: 5px; */
+  display: flex;  
+  flex-direction: column;
+}
+
+.plans button {
+  margin-top: 10px;
+}
+
+
 
 .plans > div > span {
   margin-left: 10px;
@@ -99,6 +114,7 @@ a {
 
 button.sign {
   margin: 10px;
+  margin-bottom: 60px;
 }
 
 button.approve {
@@ -106,8 +122,18 @@ button.approve {
   margin-bottom: 30px;
 }
 
-.plans button {
-  /* margin-top: 20px; */
+button.copy {
+  margin-top: 10px;
+  margin-bottom: 60px;
+}
+
+div.connect {
+  margin-bottom: 60px;
+}
+
+h2.sig {
+  margin-top: 0px;
+  margin-bottom: 5px;
 }
 
 button {
@@ -127,11 +153,17 @@ button:hover {
 }
 
 h2 {
-  margin-top: 50px;
+  margin-top: 0px;
 }
 
-main > a {
+main > a:nth-of-type(1) {
   position: absolute;
   top: 10px;
+  left: 10px;
+}
+
+main > a:nth-of-type(2) {
+  position: absolute;
+  top: 35px;
   left: 10px;
 }

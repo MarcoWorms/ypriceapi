@@ -48,36 +48,36 @@ const Plan = props => {
     <div>
       <h3>Plan {props.id}</h3>
       <b><p>Price:</p></b>
-      <span>{props.price} <span style={{color:'black', fontSize: 10}}>wei of dai, per second</span></span>
-      <span>{props.price * 60} <span style={{color:'black', fontSize: 10}}>wei of dai, per hour</span></span>
-      <span>{props.price * 60 * 24} <span style={{color:'black', fontSize: 10}}>wei of dai, per day</span></span>
-      <span>{props.price * 60 * 24 * 7} <span style={{color:'black', fontSize: 10}}>wei of dai, per week</span></span>
-      <span>{props.price * 60 * 24 * 30} <span style={{color:'black', fontSize: 10}}>wei of dai, per month</span></span>
-      <span>{props.price * 60 * 24 * 180} <span style={{color:'black', fontSize: 10}}>wei of dai, per half year</span></span>
-      <span>{props.price * 60 * 24 * 360} <span style={{color:'black', fontSize: 10}}>wei of dai, per year</span></span>
+      <span>{((props.price/10**6)).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per second</span></span>
+      <span>{((props.price/10**6) * 60).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per hour</span></span>
+      <span>{((props.price/10**6) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
+      <span>{((props.price/10**6) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
+      <span>{((props.price/10**6) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
+      <span>{((props.price/10**6) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
+      <span>{((props.price/10**6) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
       <b><p>Rate limit per second:</p></b>
       <span>{props.rateLimit}</span>
       <b><p>Time Interval:</p></b>
       <span>{props.timeInterval}</span>
       <br />
-      {props.hasAllowance && <b><p>Choose amount of days to subscribe:</p></b>}
+      {props.hasAllowance && <b><p>Choose amount of days to subscribe for:</p></b>}
       <div>
         <div>
           {props.hasAllowance && <button className="subscribe" onClick={async () => {
             subscribePlanDay()
-          }}>1</button>}
+          }}>1 day</button>}
           {props.hasAllowance && <button className="subscribe" onClick={async () => {
             subscribePlanWeek()
-          }}>7</button>}
+          }}>7 days</button>}
           {props.hasAllowance && <button className="subscribe" onClick={async () => {
             subscribePlanMonth()
-          }}>30</button>}
+          }}>30 days</button>}
           {props.hasAllowance && <button className="subscribe" onClick={async () => {
             subscribePlanHalfYear()
-          }}>180</button>}
+          }}>180 days</button>}
           {props.hasAllowance && <button className="subscribe" onClick={async () => {
             subscribePlanYear()
-          }}>360</button>}
+          }}>360 days</button>}
         </div>
       </div>
     </div>
@@ -146,34 +146,37 @@ const Home = () => {
       <main>
         <h1>yPrice API</h1>
         <a target="_blank" href="https://ypriceapi-beta.yearn.finance/docs" rel="noreferrer">documentation</a>
+        <a target="_blank" href="https://ypriceapi-beta.yearn.finance/docs" rel="noreferrer">tutorial</a>
         {/* <p style={{fontFamily: 'monospace', color: '#0675F9', backgroundColor: '#eee', fontSize: 16}}>ypriceapi.yearn.farm</p> */}
         <br />
-        {connected ? (
           <>
-            <span>
+            {/* <span>
               <ConnectButton showBalance={false} accountStatus="address" />
-            </span>
-            <p>
-            Use your signed message in requests to yPriceAPI
-            </p>
-            <button className="sign" onClick={async () => {
-              signMessage({message: 'I am proving ownership of this wallet so I can use my ypriceapi subscription' })
-            }}>Sign Wallet Ownership Proof</button>
-            {data && (
-              <>
-                <p>{data}</p>
-                <button onClick={() => {
-                  navigator.clipboard.writeText(data)
-                }}>Copy</button>
-              </>
-            )}
-            <h2>Available yPriceAPI Plans</h2>
+            </span> */}
+            {connected ? <>
+              <div className="connect"><ConnectButton showBalance={false} accountStatus="address" /></div>
+              <p>
+              Use your signed message in requests to yPriceAPI
+              </p>
+              <button className="sign" onClick={async () => {
+                signMessage({message: 'I am proving ownership of this wallet so I can use my ypriceapi subscription' })
+              }}>Sign Wallet Ownership Proof</button>
+              {data && (
+                <>
+                  <h2 className='sig' >Your Signature, use it with every request:</h2>
+                  <p>{data}</p>
+                  <button className='copy' onClick={() => {
+                    navigator.clipboard.writeText(data)
+                  }}>Copy</button>
+                </>
+              )}
+            </> : <div className="connect"><ConnectButton showBalance={false} accountStatus="address" /></div>}
+            <h2>Available yPriceAPI Plans:</h2>
             {allowance?.toString() === '0' && <button className='approve' onClick={async () => {
               approveDaiSpending()
             }}>Allow DAI Spending</button>}
             <div className="plans">
-              { console.log(_plans) ||
-                _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[0]).map((plan, i) => (
+              { _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[0]).map((plan, i) => (
                   <Plan
                     title={plan.name}
                     price={plan[1].toString()}
@@ -181,16 +184,14 @@ const Home = () => {
                     timeInterval={plan[3].toString()}
                     id={plan[4].toString()}
                     key={plan[4].toString()}
-                    hasAllowance={allowance?.toString() !== '0'}
+                    hasAllowance={allowance?.toString() !== '0' && connected}
                   />
                 ))
               }
               
             </div>
           </>  
-        ) : (
-          <ConnectButton showBalance={false} accountStatus="address" />
-        )}
+        
         {/* <input type="text" placeholder='address' /> */}
       </main>
     </div>
