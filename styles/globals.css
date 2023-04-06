@@ -131,6 +131,20 @@ div.connect {
   margin-bottom: 60px;
 }
 
+.subscribed {
+  margin-bottom: 60px;
+}
+
+.subscribed span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.subscribed span h3 {
+  margin-bottom: 0;
+}
+
 h2.sig {
   margin-top: 0px;
   margin-bottom: 5px;

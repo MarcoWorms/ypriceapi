@@ -97,6 +97,15 @@ const Home = () => {
     functionName: 'plan_count',
   })
 
+  const { data: _plansSubscribed } = useContractReads({
+    contracts: Array.from({ length: planCount }, (_, i) => ({
+      ...yPriceData,
+      functionName: 'subscription_end',
+      args: [i + 1, address],
+    })),
+  })
+  console.log(_plansSubscribed)
+
   const { data: _plans } = useContractReads({
     contracts: Array.from({ length: planCount }, (_, i) => ({
       ...yPriceData,
@@ -105,15 +114,18 @@ const Home = () => {
     })),
   })
 
+  const dai = '0x6B175474E89094C44Da98b954EedeAC495271d0F'
+
   const { config: approveConfig } = usePrepareContractWrite({
-    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    address: dai,
     abi: daiABI,
     functionName: 'approve',
     args: [yPriceData.address, MAX_APPROVAL_VALUE],
   })
   const { write: approveDaiSpending } = useContractWrite(approveConfig)
+
   const { data: allowance } = useContractRead({
-    address: '0x6B175474E89094C44Da98b954EedeAC495271d0F',
+    address: dai,
     abi: daiABI,
     functionName: 'allowance',
     args: [address, yPriceData.address],
@@ -171,6 +183,14 @@ const Home = () => {
                 </>
               )}
             </> : <div className="connect"><ConnectButton showBalance={false} accountStatus="address" /></div>}
+            <div className="subscribed">
+            {_plansSubscribed && _plansSubscribed.map((plan, i) => ([plan * 1000, i + 1])).filter(plan => plan[0] !== 0).map((plan) => (
+                <span key={plan[1]}>
+                  <h3>Subscribed to plan {plan[1]}</h3>
+                  <p>Expires at {new Date(plan[0]).toLocaleDateString()}</p>
+                </span>
+            ))}
+                </div>
             <h2>Available yPriceAPI Plans:</h2>
             {allowance?.toString() === '0' && <button className='approve' onClick={async () => {
               approveDaiSpending()
