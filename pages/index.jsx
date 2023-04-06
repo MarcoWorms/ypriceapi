@@ -171,7 +171,7 @@ const Home = () => {
               Use your signed message in requests to yPriceAPI
               </p>
               <button className="sign" onClick={async () => {
-                signMessage({message: 'I am proving ownership of this wallet so I can use my ypriceapi subscription' })
+                signMessage({message: 'I am proving ownership of this wallet so I can access ypriceAPI.' })
               }}>Sign Wallet Ownership Proof</button>
               {data && (
                 <>
