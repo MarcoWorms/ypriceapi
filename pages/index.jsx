@@ -6,7 +6,7 @@ import ypriceapiABI from './ypriceapiABI.json'
 import daiABI from './daiABI.json'
 
 const yPriceData = {
-  address: '0x348988740a353CF7c53a549b22F5E3C3fc0f98DA',
+  address: '0xee320e44809355a04a93d8336B7978553D7f7042',
   abi: ypriceapiABI,
 }
 
@@ -46,15 +46,15 @@ const Plan = props => {
 
   return (
     <div>
-      <h3>Plan {props.id}</h3>
+      <h3>Plan {props.title}</h3>
       <b><p>Price:</p></b>
-      <span>{((props.price/10**6)).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per second</span></span>
-      <span>{((props.price/10**6) * 60).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per hour</span></span>
-      <span>{((props.price/10**6) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
-      <span>{((props.price/10**6) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
-      <span>{((props.price/10**6) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
-      <span>{((props.price/10**6) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
-      <span>{((props.price/10**6) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
+      <span>{((props.price/10**18)).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per second</span></span>
+      <span>{((props.price/10**18) * 60).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per hour</span></span>
+      <span>{((props.price/10**18) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
+      <span>{((props.price/10**18) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
+      <span>{((props.price/10**18) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
+      <span>{((props.price/10**18) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
+      <span>{((props.price/10**18) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
       <b><p>Rate limit per second:</p></b>
       <span>{props.rateLimit}</span>
       <b><p>Time Interval:</p></b>
@@ -104,7 +104,6 @@ const Home = () => {
       args: [i + 1, address],
     })),
   })
-  console.log(_plansSubscribed)
 
   const { data: _plans } = useContractReads({
     contracts: Array.from({ length: planCount }, (_, i) => ({
@@ -195,21 +194,21 @@ const Home = () => {
             {allowance?.toString() === '0' && <button className='approve' onClick={async () => {
               approveDaiSpending()
             }}>Allow DAI Spending</button>}
-            <div className="plans">
-              { _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[0]).map((plan, i) => (
+            {console.log(_plans) || <div className="plans">
+              { _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[5]).map((plan, i) => (
                   <Plan
-                    title={plan.name}
+                    title={plan[0]}
                     price={plan[1].toString()}
                     rateLimit={plan[2].toString()}
-                    timeInterval={plan[3].toString()}
-                    id={plan[4].toString()}
-                    key={plan[4].toString()}
+                    timeInterval={plan[4].toString()}
+                    id={plan[6]}
+                    key={plan[6]}
                     hasAllowance={allowance?.toString() !== '0' && connected}
                   />
                 ))
               }
               
-            </div>
+            </div>}
           </>  
         
         {/* <input type="text" placeholder='address' /> */}
