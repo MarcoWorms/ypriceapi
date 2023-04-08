@@ -185,7 +185,7 @@ const Home = () => {
             {_plansSubscribed && _plansSubscribed.find(plan => plan !== 0) && <div className="subscribed">
               {_plansSubscribed && _plansSubscribed.map((plan, i) => ([plan * 1000, i + 1])).filter(plan => plan[0] !== 0).map((plan) => (
                   <span key={plan[1]}>
-                    <h3>Subscribed to plan {plan[1]}</h3>
+                    <h3>Subscribed to plan {_plans[1]}</h3>
                     <p>Expires at {new Date(plan[0]).toLocaleDateString()}</p>
                   </span>
               ))}
@@ -194,7 +194,7 @@ const Home = () => {
             {allowance?.toString() === '0' && <button className='approve' onClick={async () => {
               approveDaiSpending()
             }}>Allow DAI Spending</button>}
-            {console.log(_plans) || <div className="plans">
+            <div className="plans">
               { _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[5]).map((plan, i) => (
                   <Plan
                     title={plan[0]}
@@ -208,7 +208,7 @@ const Home = () => {
                 ))
               }
               
-            </div>}
+            </div>
           </>  
         
         {/* <input type="text" placeholder='address' /> */}
