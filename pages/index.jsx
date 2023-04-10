@@ -17,44 +17,44 @@ const Plan = props => {
   const { write: subscribePlanDay } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price * 60 * 24],
+    args: [props.id, props.price.mul(60).mul(24)],
   })
 
   const { write: subscribePlanWeek } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price * 60 * 24 * 7],
+    args: [props.id, props.price.mul(60).mul(24).mul(7)],
   })
 
   const { write: subscribePlanMonth } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price * 60 * 24 * 30],
+    args: [props.id, props.price.mul(60).mul(24).mul(30)],
   })
 
   const { write: subscribePlanHalfYear } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price * 60 * 24 * 180],
+    args: [props.id, props.price.mul(60).mul(24).mul(180)],
   })
 
   const { write: subscribePlanYear } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price * 60 * 24 * 360],
+    args: [props.id, props.price.mul(60).mul(24).mul(360)],
   })
 
   return (
     <div>
       <h3>Plan {props.title}</h3>
       <b><p>Price:</p></b>
-      <span>{((props.price/10**18)).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per second</span></span>
-      <span>{((props.price/10**18) * 60).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per hour</span></span>
-      <span>{((props.price/10**18) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
-      <span>{((props.price/10**18) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
-      <span>{((props.price/10**18) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
-      <span>{((props.price/10**18) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
-      <span>{((props.price/10**18) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
+      <span>{((props.price.toString()/10**18)).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per second</span></span>
+      <span>{((props.price.toString()/10**18) * 60).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per hour</span></span>
+      <span>{((props.price.toString()/10**18) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
+      <span>{((props.price.toString()/10**18) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
+      <span>{((props.price.toString()/10**18) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
+      <span>{((props.price.toString()/10**18) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
+      <span>{((props.price.toString()/10**18) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
       <b><p>Rate limit per second:</p></b>
       <span>{props.rateLimit}</span>
       <b><p>Time Interval:</p></b>
@@ -196,9 +196,9 @@ const Home = () => {
             }}>Allow DAI Spending</button>}
             <div className="plans">
               { _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[5]).map((plan, i) => (
-                  <Plan
+                  console.log(plan) || <Plan
                     title={plan[0]}
-                    price={plan[1].toString()}
+                    price={plan[1]}
                     rateLimit={plan[2].toString()}
                     timeInterval={plan[4].toString()}
                     id={plan[6]}
