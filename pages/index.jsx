@@ -10,52 +10,58 @@ const yPriceData = {
   abi: ypriceapiABI,
 }
 
-const MAX_APPROVAL_VALUE = '115792089237316195423570985008687907853269984665640564039457584007913129639935'
+const MAX_APPROVAL_VALUE = String(250 * (10**18))
 
 const Plan = props => {
 
   const { write: subscribePlanDay } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price.mul(60).mul(24)],
+    args: [props.id, props.price && props.price.mul(60).mul(24)],
   })
 
   const { write: subscribePlanWeek } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price.mul(60).mul(24).mul(7)],
+    args: [props.id, props.price && props.price.mul(60).mul(24).mul(7)],
   })
 
   const { write: subscribePlanMonth } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price.mul(60).mul(24).mul(30)],
+    args: [props.id, props.price && props.price.mul(60).mul(24).mul(30)],
   })
 
   const { write: subscribePlanHalfYear } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price.mul(60).mul(24).mul(180)],
+    args: [props.id, props.price && props.price.mul(60).mul(24).mul(180)],
   })
 
   const { write: subscribePlanYear } = useContractWrite({
     ...yPriceData,
     functionName: 'subscribe',
-    args: [props.id, props.price.mul(60).mul(24).mul(360)],
+    args: [props.id, props.price && props.price.mul(60).mul(24).mul(360)],
   })
 
   return (
     <div>
-      <h3>Plan {props.title}</h3>
+      <h3>Plan: {props.title}</h3>
+      <br />
       <b><p>Price:</p></b>
       {/* <span>{((props.price.toString()/10**18)).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per second</span></span>
       <span>{((props.price.toString()/10**18) * 60).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per hour</span></span> */}
-      <span>{((props.price.toString()/10**18) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
-      <span>{((props.price.toString()/10**18) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
-      <span>{((props.price.toString()/10**18) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
-      <span>{((props.price.toString()/10**18) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
-      <span>{((props.price.toString()/10**18) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
-      <b><p>Rate limit per second:</p></b>
+      {props.price ? (
+        <>
+          <span>{((props.price.toString()/10**18) * 60 * 24).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per day</span></span>
+          <span>{((props.price.toString()/10**18) * 60 * 24 * 7).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per week</span></span>
+          <span>{((props.price.toString()/10**18) * 60 * 24 * 30).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per month</span></span>
+          <span>{((props.price.toString()/10**18) * 60 * 24 * 180).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per half year</span></span>
+          <span>{((props.price.toString()/10**18) * 60 * 24 * 360).toFixed(8)} <span style={{color:'black', fontSize: 10}}> dai, per year</span></span>
+        </>
+      ) : <span><br />FREE!<br /><br />Just send requests without subscribing any plan!</span>}
+      <br />
+      <b><p>{props.price? 'Rate limit per second:' : 'Rate limit per minute'}</p></b>
       <span>{props.rateLimit}</span>
       {/* <b><p>Time Interval:</p></b>
       <span>{props.timeInterval}</span> */}
@@ -191,10 +197,20 @@ const Home = () => {
               ))}
             </div>}
             <h2>Available yPriceAPI Plans:</h2>
+            <p style={{color: 'black'}}>Notice: Service may experience downtime and slow performance due to parameter adjustments; initial price retrieval for new tokens may be slower than usual.</p>
+            <br />
             {allowance?.toString() === '0' && <button className='approve' onClick={async () => {
               approveDaiSpending()
             }}>Allow DAI Spending</button>}
             <div className="plans">
+              <Plan
+                title={'Free'}
+                price={false}
+                rateLimit={1}
+                timeInterval={0}
+                id={9999999}
+                hasAllowance={false}
+              />
               { _plans && _plans.map((plan, i) => ([...plan, i + 1])).filter(plan => plan[5]).map((plan, i) => (
                   console.log(plan) || <Plan
                     title={plan[0]}
@@ -207,7 +223,6 @@ const Home = () => {
                   />
                 ))
               }
-              
             </div>
           </>  
         
